@@ -1,0 +1,11 @@
+[package]
+name = "get-shell"
+version = "0.1.0"
+authors = ["John Meow <j0hn.meow@ya.ru>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sysinfo = "0.15.9"
+thiserror = "1.0.23"
