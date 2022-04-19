@@ -66,6 +66,14 @@ impl Shell {
             shell => Self::from_str(shell),
         }
     }
+    /// Get the string representation of this shell.
+    ///
+    /// All names are in lowercase.
+    ///
+    /// Unexpected values or ambiguities are sorted out below:
+    ///
+    /// - [`Shell::Nushell`] => `nu`
+    /// - [`Shell::Powershell`] => `powershell`
     pub fn to_str(self) -> &'static str {
         match self {
             Shell::Bash => "bash",
