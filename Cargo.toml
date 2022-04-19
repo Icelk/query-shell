@@ -1,32 +1,17 @@
 [package]
-name = "get-shell"
-description = "A simple library to get the shell your binary is runned from"
+name = "query-shell"
+description = "A simple library to get the user's shell."
 version = "0.1.0"
-authors = ["John Meow <j0hn.meow@ya.ru>"]
+authors = ["Icelk <main@icelk.dev>", "John Meow <j0hn.meow@ya.ru>"]
 edition = "2018"
 readme = "README.md"
 license = "MIT"
-repository = "https://gitlab.com/johnmeow/is-root"
+repository = "https://github.com/Icelk/query-shell"
 keywords = ["shell", "system"]
 categories = ["command-line-interface", "os"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-sysinfo = "0.15.9"
+sysinfo = { version = "0.15.9", default-features = false }
 thiserror = "1.0.23"
-
-[badges]
-  [badges.gitlab]
-  repository = "johnmeow/is-root"
-
-  [badges.maintenance]
-  status = "as-is"
-
-  [badges.codecov]
-  repository = "johnmeow/is-root"
-  service = "gitlab"
-
-  [badges.coveralls]
-  repository = "johnmeow/is-root"
-  service = "gitlab"

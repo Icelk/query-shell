@@ -1,8 +1,10 @@
 use std::str::FromStr;
-use sysinfo::{get_current_pid, ProcessExt, System, SystemExt};
+use sysinfo::{get_current_pid, ProcessExt, RefreshKind, System, SystemExt};
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+/// A non-exhaustive list of errors when fetching the process name
+/// and resolving it into a shell.
+#[derive(Error, Debug, PartialEq, Clone)]
 #[non_exhaustive]
 pub enum Error {
     #[error("The platform is not supported")]
@@ -15,9 +17,15 @@ pub enum Error {
     InSu,
 }
 
-#[must_use]
+/// Fetches the parent process's name in lowercase.
+///
+/// # Errors
+///
+/// Returns [`Error::UnsupportedPlatform`] if the call to [`sysinfo::get_current_pid`] fails.
+///
+/// Returns [`Error::NoParent`] if this process has no parent.
 pub fn get_shell_name() -> Result<String, Error> {
-    let sys = System::new_all();
+    let sys = System::new_with_specifics(RefreshKind::new().with_processes());
     let process = sys
         .get_process(get_current_pid().map_err(|_| Error::UnsupportedPlatform)?)
         .expect("Process with current pid does not exist");
@@ -26,15 +34,16 @@ pub fn get_shell_name() -> Result<String, Error> {
         .expect("Process with parent pid does not exist");
     let shell = parent.name().trim().to_lowercase();
     let shell = shell.strip_suffix(".exe").unwrap_or(&shell); // windows bad
-    let shell = shell.strip_prefix("-").unwrap_or(&shell); // login shells
+    let shell = shell.strip_prefix('-').unwrap_or(shell); // login shells
     Ok(shell.to_owned())
 }
-#[must_use]
 pub fn get_shell() -> Result<Shell, Error> {
     Shell::get()
 }
 
-#[derive(Debug)]
+/// The type of shell.
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[non_exhaustive]
 pub enum Shell {
     Bash,
     Elvish,
@@ -47,12 +56,26 @@ pub enum Shell {
 }
 
 impl Shell {
-    #[must_use]
+    /// Fetch the shell running this process.
+    ///
+    /// See [`get_shell_name`] for more info.
     pub fn get() -> Result<Self, Error> {
         match get_shell_name()?.as_str() {
             "su" => Err(Error::InSu),
             shell if shell.starts_with("python") => Ok(Self::Xonsh),
             shell => Self::from_str(shell),
+        }
+    }
+    pub fn to_str(self) -> &'static str {
+        match self {
+            Shell::Bash => "bash",
+            Shell::Elvish => "elvish",
+            Shell::Fish => "fish",
+            Shell::Ion => "ion",
+            Shell::Nushell => "nu",
+            Shell::Powershell => "powershell",
+            Shell::Xonsh => "xonsh",
+            Shell::Zsh => "zsh",
         }
     }
 }
