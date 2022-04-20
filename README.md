@@ -26,6 +26,7 @@ println!("{}", get_shell_name().unwrap());
 ### v0.2.0
 
 -   Updated `sysinfo` to the latest release.
+    -   This removed 4 dependencies
 -   Improved runtime performance (from ~170ms to ~140ms).
 
 ### v0.1.0
