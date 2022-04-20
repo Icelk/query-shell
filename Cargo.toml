@@ -1,7 +1,7 @@
 [package]
 name = "query-shell"
 description = "A simple library to get the user's shell."
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Icelk <main@icelk.dev>", "John Meow <j0hn.meow@ya.ru>"]
 edition = "2018"
 readme = "README.md"
@@ -10,8 +10,6 @@ repository = "https://github.com/Icelk/query-shell"
 keywords = ["shell", "system"]
 categories = ["command-line-interface", "os"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-sysinfo = { version = "0.15.9", default-features = false }
-thiserror = "1.0.23"
+sysinfo = { version = "0.23", default-features = false }
+thiserror = "1"

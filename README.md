@@ -20,3 +20,17 @@ use query_shell::get_shell_name;
 
 println!("{}", get_shell_name().unwrap());
 ```
+
+## Changelog
+
+### v0.2.0
+
+-   Updated `sysinfo` to the latest release.
+-   Improved runtime performance (from ~170ms to ~140ms).
+
+### v0.1.0
+
+-   Forked from [alicecarroll/get-shell](https://gitlab.com/alicecarroll/get-shell).
+-   Removed default features of `sysinfo` (e.g. `rayon`).
+-   Added documentation.
+-   Not loading everything from the `sysinfo` crate (runtime went from >2s to <200ms).

@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use sysinfo::{get_current_pid, ProcessExt, RefreshKind, System, SystemExt};
+use sysinfo::{get_current_pid, ProcessExt, ProcessRefreshKind, RefreshKind, System, SystemExt};
 use thiserror::Error;
 
 /// A non-exhaustive list of errors when fetching the process name
@@ -25,12 +25,13 @@ pub enum Error {
 ///
 /// Returns [`Error::NoParent`] if this process has no parent.
 pub fn get_shell_name() -> Result<String, Error> {
-    let sys = System::new_with_specifics(RefreshKind::new().with_processes());
+    let sys =
+        System::new_with_specifics(RefreshKind::new().with_processes(ProcessRefreshKind::new()));
     let process = sys
-        .get_process(get_current_pid().map_err(|_| Error::UnsupportedPlatform)?)
+        .process(get_current_pid().map_err(|_| Error::UnsupportedPlatform)?)
         .expect("Process with current pid does not exist");
     let parent = sys
-        .get_process(process.parent().ok_or(Error::NoParent)?)
+        .process(process.parent().ok_or(Error::NoParent)?)
         .expect("Process with parent pid does not exist");
     let shell = parent.name().trim().to_lowercase();
     let shell = shell.strip_suffix(".exe").unwrap_or(&shell); // windows bad
