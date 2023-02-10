@@ -11,7 +11,9 @@ Forked from [alicecarroll/get-shell](https://gitlab.com/alicecarroll/get-shell).
 
 ## Installation
 
-Add `query-shell = "0.1"` to `[dependencies]` section in your `Cargo.toml`.
+`cargo add query-shell`
+
+Or manually add `query-shell = "0.3"` to the `[dependencies]` section in your `Cargo.toml`.
 
 ## Usage
 
@@ -22,6 +24,10 @@ println!("{}", get_shell_name().unwrap());
 ```
 
 ## Changelog
+
+### v0.3.0
+
+-   Updated `sysinfo` to the latest release.
 
 ### v0.2.0
 
